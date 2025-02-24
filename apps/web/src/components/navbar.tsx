@@ -1,14 +1,8 @@
-import { Button } from '@kaos/ui/components/button';
-import { UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from './logo';
+import { SignIn } from './sign-in';
 
 const navLinks = [
-  {
-    key: 'home',
-    label: 'Home',
-    href: '/',
-  },
   {
     key: 'reality-wars',
     label: 'Reality Wars',
@@ -19,12 +13,20 @@ const navLinks = [
     label: 'Create Chaos',
     href: '/create',
   },
+  {
+    key: 'meet-snickerdoodle',
+    label: 'Meet Snickerdoodle',
+    href: '/snickerdoodle',
+  },
 ];
 
 export const Navbar = () => {
   return (
     <div className='mx-auto mt-12 flex w-full max-w-screen-xl flex-row items-center justify-between'>
-      <div className='flex flex-row items-center gap-3'>
+      <Link
+        href='/'
+        className='flex flex-row items-center gap-3'
+      >
         <Logo
           width={52}
           height={52}
@@ -33,7 +35,7 @@ export const Navbar = () => {
         <div className='font-rabbit font-semibold text-5xl text-neutral-800'>
           KAOS
         </div>
-      </div>
+      </Link>
       <div className='flex flex-row items-center gap-6 font-comic'>
         {navLinks.map((link) => {
           return (
@@ -46,12 +48,7 @@ export const Navbar = () => {
             </Link>
           );
         })}
-        <Button
-          variant='secondary'
-          className='!rounded-full size-10'
-        >
-          <UserIcon className='size-6' />
-        </Button>
+        <SignIn />
       </div>
     </div>
   );

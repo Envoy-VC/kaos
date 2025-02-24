@@ -66,7 +66,7 @@ export const Hero = () => {
               alt='alt'
               src={image.src}
               key={image.key}
-              className='absolute top-0 size-[14rem] rounded-2xl object-cover shadow-2xl'
+              className='poster-shadow absolute top-0 size-[14rem] rounded-2xl object-cover'
               style={{
                 transform: `rotate(${image.rotation}deg) translateY(${image.y}px)`,
                 zIndex: index,
