@@ -76,7 +76,7 @@ export const Hero = () => {
           );
         })}
       </div>
-      <div className='max-w-4xl text-wrap text-center font-comic font-medium font-semibold text-lg'>
+      <div className='max-w-4xl text-wrap text-center font-comic font-semibold text-lg'>
         Enter a comic multiverse where debates fork realities! Battle rivals
         over pizza toppings, superheroes, and AI chaos. Earn points. Become
         legend. Warning: May cause existential laughter.
