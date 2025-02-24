@@ -1,5 +1,11 @@
+import { Hero } from '~/components';
+
 const Home = () => {
-  return <div className='font-comic'>KAOS</div>;
+  return (
+    <div className=''>
+      <Hero />
+    </div>
+  );
 };
 
 export default Home;

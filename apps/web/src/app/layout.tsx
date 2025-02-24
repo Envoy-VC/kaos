@@ -5,6 +5,7 @@ import { TRPCReactProvider } from '~/trpc/react';
 import '@kaos/ui/globals.css';
 
 import type { ReactNode } from 'react';
+import { Navbar } from '~/components';
 
 export const metadata: Metadata = {
   title: 'Create T3 App',
@@ -16,7 +17,10 @@ const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
   return (
     <html lang='en'>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Navbar />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );

@@ -9,6 +9,15 @@
       "correctness": {
         "noUndeclaredDependencies": "off",
         "noNodejsModules": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "error",
+          "fix": "safe",
+          "options": {
+            "functions": ["tw", "clsx", "classnames", "className"]
+          }
+        }
       }
     }
   },

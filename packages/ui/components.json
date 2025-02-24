@@ -11,10 +11,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "~/components",
-    "utils": "~/lib/utils",
-    "hooks": "~/hooks",
-    "lib": "~/lib",
-    "ui": "~/components"
+    "components": "@kaos/ui/components",
+    "utils": "@kaos/ui/lib/utils",
+    "hooks": "@kaos/ui/hooks",
+    "lib": "@kaos/ui/lib",
+    "ui": "@kaos/ui/components"
   }
 }

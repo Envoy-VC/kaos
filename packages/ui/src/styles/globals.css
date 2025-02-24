@@ -1,10 +1,16 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
+@source "../../../../packages/ui/src/**/*.{js,ts,jsx,tsx}";
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
   font-family: Comic;
   src: url("../fonts/comic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rabbit;
+  src: url("../fonts/rabbit.ttf") format("truetype");
 }
 
 :root {
@@ -117,6 +123,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-comic: Comic, sans-serif;
+  --font-rabbit: Rabbit, sans-serif;
 }
 
 @layer base {
@@ -125,5 +132,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }

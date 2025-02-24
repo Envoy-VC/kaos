@@ -1,0 +1,4 @@
+{
+  "$schema": "https://gist.githubusercontent.com/dir/945673224a85d0185f78f6f46a563320/raw/convex.schema.json",
+  "functions": "src/convex/"
+}
