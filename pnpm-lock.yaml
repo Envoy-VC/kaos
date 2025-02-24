@@ -32,7 +32,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@repo/ui':
+      '@kaos/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@t3-oss/env-nextjs':
