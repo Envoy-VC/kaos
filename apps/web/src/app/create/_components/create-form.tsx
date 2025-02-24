@@ -41,13 +41,13 @@ const ideas: string[] = [
 
 export const CreateForm = () => {
   return (
-    <div className='mx-auto my-[5dvh] h-[30rem] max-w-screen-lg rounded-xl border-[2px] border-black bg-[#F6F8FA] p-6 font-comic'>
+    <div className='mx-auto my-[5dvh] max-w-screen-lg rounded-xl border-[2px] border-black bg-[#F6F8FA] p-6 px-3 font-comic'>
       <div className='flex h-full w-full flex-col gap-4 md:flex-row'>
         <div className='flex basis-1/2 flex-col gap-8 p-4'>
           <div className='font-bold text-3xl'>Drop Your Nuclear Take Here</div>
           <Textarea
             placeholder='Type your hottest take...'
-            className='!text-lg'
+            className='!text-lg h-[8rem]'
             rows={5}
           />
           <Button className='!rounded-2xl !text-xl h-12 w-full'>Create</Button>

@@ -1,9 +1,9 @@
 export const CreateChaosHero = () => {
   return (
-    <div className='mx-auto mt-[10dvh] flex max-w-screen-xl flex-col text-center font-comic font-medium text-3xl leading-[1.2] sm:text-4xl lg:text-5xl xl:text-6xl'>
-      <div className='mx-auto flex flex-row items-center gap-x-4'>
+    <div className='mx-auto mt-[10dvh] flex max-w-screen-xl flex-col text-center font-comic font-medium text-2xl leading-[1.2] sm:text-4xl lg:text-5xl xl:text-6xl'>
+      <div className='mx-auto flex flex-row flex-wrap items-center justify-center gap-2 gap-x-4 md:justify-start'>
         Your Opinion Creates New
-        <div className='!rotate-[5deg] rounded-3xl border-[4px] border-black bg-blue-700 px-6 py-1 text-white'>
+        <div className='!rotate-[5deg] rounded-3xl border-[4px] border-black bg-blue-700 px-2 py-1 text-white md:px-6'>
           Universes
         </div>
       </div>

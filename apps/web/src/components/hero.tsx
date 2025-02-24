@@ -52,13 +52,13 @@ const images = [
 
 export const Hero = () => {
   return (
-    <div className='mx-auto mt-[10dvh] flex max-w-screen-xl flex-col items-center gap-16'>
+    <div className='mx-auto my-[10dvh] flex max-w-screen-xl flex-col items-center gap-16 overflow-x-hidden'>
       <div className='text-center font-comic font-semibold text-3xl sm:text-5xl lg:text-6xl xl:text-7xl'>
         Your Hot Take Just
         <br />
         Forked Reality
       </div>
-      <div className='!h-[16rem] relative mx-auto flex w-full max-w-5xl flex-row items-center justify-center'>
+      <div className='!h-[16rem] relative mx-auto flex w-[32rem] flex-row items-center justify-center md:w-[64rem]'>
         {images.map((image, index) => {
           return (
             // biome-ignore lint/nursery/noImgElement: safe as no need to optimize
@@ -66,7 +66,7 @@ export const Hero = () => {
               alt='alt'
               src={image.src}
               key={image.key}
-              className='poster-shadow absolute top-0 size-[14rem] rounded-2xl object-cover'
+              className='poster-shadow absolute top-0 size-[10rem] rounded-2xl object-cover md:size-[14rem]'
               style={{
                 transform: `rotate(${image.rotation}deg) translateY(${image.y}px)`,
                 zIndex: index,
@@ -76,7 +76,7 @@ export const Hero = () => {
           );
         })}
       </div>
-      <div className='max-w-4xl text-wrap text-center font-comic font-semibold text-lg'>
+      <div className='max-w-4xl text-wrap px-2 text-center font-comic font-semibold text-lg'>
         Enter a comic multiverse where debates fork realities! Battle rivals
         over pizza toppings, superheroes, and AI chaos. Earn points. Become
         legend. Warning: May cause existential laughter.

@@ -22,7 +22,7 @@ const navLinks = [
 
 export const Navbar = () => {
   return (
-    <div className='mx-auto mt-12 flex w-full max-w-screen-xl flex-row items-center justify-between'>
+    <div className='mx-auto mt-12 flex w-full max-w-screen-xl flex-row items-center justify-between px-4'>
       <Link
         href='/'
         className='flex flex-row items-center gap-3'
@@ -40,7 +40,7 @@ export const Navbar = () => {
         {navLinks.map((link) => {
           return (
             <Link
-              className='!font-bold !text-lg text-neutral-800 transition-colors duration-200 hover:text-neutral-500 active:text-neutral-800'
+              className='!font-bold !text-lg hidden text-neutral-800 transition-colors duration-200 hover:text-neutral-500 active:text-neutral-800 md:block'
               href={link.href}
               key={link.key}
             >
