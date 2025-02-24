@@ -1,9 +1,10 @@
-import { CreateChaosHero } from './_components';
+import { CreateChaosHero, CreateForm } from './_components';
 
 const CreateChaos = () => {
   return (
     <div>
       <CreateChaosHero />
+      <CreateForm />
     </div>
   );
 };
