@@ -7,7 +7,7 @@ import '@kaos/ui/globals.css';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import { Navbar } from '~/components';
-import { Web3Provider } from '~/providers';
+import { ConvexClientProvider, Web3Provider } from '~/providers';
 
 export const metadata: Metadata = {
   title: 'Create T3 App',
@@ -23,8 +23,10 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
       <body>
         <TRPCReactProvider>
           <Web3Provider cookies={cookies}>
-            <Navbar />
-            {children}
+            <ConvexClientProvider>
+              <Navbar />
+              {children}
+            </ConvexClientProvider>
           </Web3Provider>
         </TRPCReactProvider>
       </body>
