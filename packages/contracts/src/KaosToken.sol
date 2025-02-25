@@ -7,8 +7,9 @@ import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC2
 import {ERC20Pausable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
 
-contract Kaos is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit {
+contract KaosToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit {
     uint256 public INITIAL_PRICE = 1000 gwei;
 
     error NotEnoughBalance();
@@ -31,7 +32,7 @@ contract Kaos is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit {
     }
 
     function withdraw(uint256 amount) public onlyOwner {
-        payable(msg.sender).transfer(amount);
+        SafeTransferLib.safeTransferETH(owner(), amount);
     }
 
     // The following functions are overrides required by Solidity.

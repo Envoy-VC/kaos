@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.23;
 
 import {Script, console} from "forge-std/Script.sol";
 import {Kaos} from "src/Kaos.sol";
+import {KaosToken} from "src/KaosToken.sol";
 
 contract DeployScript is Script {
     function setUp() public {}
@@ -14,9 +15,10 @@ contract DeployScript is Script {
 
         console.log("Deploying with deployer address", deployerAddress);
 
-        Kaos kaos = new Kaos();
-
-        console.log("Deployed at address: %s", address(kaos));
+        KaosToken token = new KaosToken(deployerAddress);
+        Kaos kaos = new Kaos(address(token));
+        console.log("Token deployed at address: %s", address(token));
+        console.log("Kaos deployed at address: %s", address(kaos));
         vm.stopBroadcast();
     }
 }
