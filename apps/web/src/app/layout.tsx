@@ -4,8 +4,10 @@ import { TRPCReactProvider } from '~/trpc/react';
 
 import '@kaos/ui/globals.css';
 
+import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import { Navbar } from '~/components';
+import { Web3Provider } from '~/providers';
 
 export const metadata: Metadata = {
   title: 'Create T3 App',
@@ -13,13 +15,17 @@ export const metadata: Metadata = {
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 
-const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
+const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
+  const headersObj = await headers();
+  const cookies = headersObj.get('cookie');
   return (
     <html lang='en'>
       <body>
         <TRPCReactProvider>
-          <Navbar />
-          {children}
+          <Web3Provider cookies={cookies}>
+            <Navbar />
+            {children}
+          </Web3Provider>
         </TRPCReactProvider>
       </body>
     </html>
