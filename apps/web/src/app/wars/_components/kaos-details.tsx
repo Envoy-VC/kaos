@@ -3,7 +3,7 @@ import { KaosStats } from './kaos-stats';
 
 export const KaosDetails = () => {
   return (
-    <div className='h-full max-h-[24rem] w-full rounded-2xl border-2 border-black bg-[#F6F8FA] font-comic'>
+    <div className='h-full w-full basis-1/4 rounded-2xl border-2 border-black bg-[#F6F8FA] font-comic'>
       <div className='flex h-full flex-col'>
         <div className='flex h-[3rem] w-full justify-end rounded-t-xl bg-[#383838] px-4'>
           <div className='flex flex-row items-center gap-2'>

@@ -19,13 +19,13 @@ const chartData = [
 ];
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
+  yes: {
+    label: 'Forks',
     color: 'hsl(var(--chart-yes))',
     icon: TrendingDown,
   },
-  mobile: {
-    label: 'Mobile',
+  no: {
+    label: 'Burns',
     color: 'hsl(var(--chart-no))',
     icon: TrendingUp,
   },
@@ -33,7 +33,7 @@ const chartConfig = {
 
 export const KaosCharts = () => {
   return (
-    <div className='h-full w-full basis-3/5 overflow-hidden rounded-2xl border-2 border-black bg-[#D2DFFD]'>
+    <div className='flex h-full w-full basis-3/5 items-end justify-end overflow-hidden rounded-2xl border-2 border-black bg-[#D2DFFD]'>
       <ChartContainer
         config={chartConfig}
         className='m-0 h-[14rem] w-full p-0'
@@ -69,7 +69,6 @@ export const KaosCharts = () => {
             stroke='var(--chart-no)'
             stackId='a'
           />
-          {/* <ChartLegend content={<ChartLegendContent />} /> */}
         </AreaChart>
       </ChartContainer>
     </div>
