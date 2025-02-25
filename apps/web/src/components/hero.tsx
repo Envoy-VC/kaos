@@ -23,7 +23,7 @@ const transformStyles = [
 export const Hero = () => {
   return (
     <div className='mx-auto my-[10dvh] flex max-w-screen-xl flex-col items-center gap-16 overflow-x-hidden'>
-      <div className='text-center font-comic font-semibold text-3xl sm:text-5xl lg:text-6xl xl:text-7xl'>
+      <div className='text-center font-comic font-semibold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl'>
         Your Hot Take Just
         <br />
         Forked Reality

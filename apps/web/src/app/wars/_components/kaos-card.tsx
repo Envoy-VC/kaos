@@ -8,7 +8,7 @@ interface ChaosCardProps {
   title: string;
 }
 
-export const ChaosCard = () => {
+export const KaosCard = () => {
   return (
     <div className='flex h-full min-w-[20rem] flex-col gap-2 rounded-lg border-[3px] border-black bg-[#B2E7B9] px-4 py-3 font-comic sm:h-[12rem] sm:min-w-[30rem] sm:flex-row'>
       <div className='flex h-full w-full basis-2/3 flex-col justify-between gap-2 text-wrap'>

@@ -138,7 +138,7 @@ export const BounceCards = ({
         // biome-ignore lint/nursery/noStaticElementInteractions: <explanation>
         <div
           key={`card-${String(idx)}`}
-          className={`card card-${idx} absolute aspect-square w-[200px] overflow-hidden rounded-[30px] border-8 border-white`}
+          className={`card card-${idx} absolute aspect-square w-[256px] overflow-hidden rounded-[30px] border-8 border-white`}
           style={{
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
             transform: transformStyles[idx] || 'none',
