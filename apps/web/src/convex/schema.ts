@@ -1,8 +1,10 @@
 import { defineSchema } from 'convex/server';
-import { coreTables } from './tables';
+import { conversationTables, coreTables, realitiesTables } from './tables';
 
 const schema = defineSchema({
   ...coreTables,
+  ...realitiesTables,
+  ...conversationTables,
 });
 
 // biome-ignore lint/style/noDefaultExport: needed for convex
