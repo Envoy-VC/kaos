@@ -39,5 +39,6 @@ interface IKaos {
     event Claimed(bytes realityId, address user, uint256 amount);
 
     function createReality(bytes calldata _realityId) external;
-    function addToReality(bytes calldata _realityId, uint256 _amount, Action action) external;
+    function addToReality(bytes calldata _realityId, uint256 _amount, Action action, address user) external;
+    function claimKaos(bytes calldata _realityId, address user) external;
 }

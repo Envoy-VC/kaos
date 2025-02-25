@@ -3,8 +3,8 @@ pragma solidity ^0.8.23;
 
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
 import {IKaos} from "./interfaces/IKaos.sol";
+import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
 
 contract Kaos is IKaos, ReentrancyGuard {
     // Reality Id (bytes) => Reality
@@ -34,7 +34,10 @@ contract Kaos is IKaos, ReentrancyGuard {
         });
     }
 
-    function addToReality(bytes calldata _realityId, uint256 _amount, Action action) external nonReentrant {
+    function addToReality(bytes calldata _realityId, uint256 _amount, Action action, address user)
+        external
+        nonReentrant
+    {
         if (realities[_realityId].startBlock == 0) {
             revert RealityDoesNotExist();
         }
@@ -43,23 +46,25 @@ contract Kaos is IKaos, ReentrancyGuard {
             revert RealityCollapsed();
         }
 
-        if (kaosToken.balanceOf(msg.sender) < _amount) {
+        if (kaosToken.balanceOf(user) < _amount) {
             revert NotEnoughBalance();
         }
 
-        kaosToken.transferFrom(msg.sender, address(this), _amount);
+        SafeTransferLib.safeTransferFrom(address(kaosToken), user, address(this), _amount);
+
+        kaosToken.transferFrom(user, address(this), _amount);
 
         if (action == Action.FORK) {
             realities[_realityId].totalAmountForks += _amount;
-            userPools[_realityId][msg.sender].totalAmountForks += _amount;
+            userPools[_realityId][user].totalAmountForks += _amount;
         }
 
         if (action == Action.BURN) {
             realities[_realityId].totalAmountBurns += _amount;
-            userPools[_realityId][msg.sender].totalAmountBurns += _amount;
+            userPools[_realityId][user].totalAmountBurns += _amount;
         }
 
-        userPools[_realityId][msg.sender].totalAmount += _amount;
+        userPools[_realityId][user].totalAmount += _amount;
         realities[_realityId].totalAmount += _amount;
 
         emit AddKaosToReality(
@@ -67,7 +72,7 @@ contract Kaos is IKaos, ReentrancyGuard {
         );
     }
 
-    function claimKaos(bytes calldata _realityId) external nonReentrant {
+    function claimKaos(bytes calldata _realityId, address user) external nonReentrant {
         // Check if the reality exists
         if (realities[_realityId].startBlock == 0) {
             revert RealityDoesNotExist();
@@ -79,11 +84,11 @@ contract Kaos is IKaos, ReentrancyGuard {
         }
 
         // Check if the user has already claimed
-        if (userPools[_realityId][msg.sender].claimed) {
+        if (userPools[_realityId][user].claimed) {
             revert AlreadyClaimed();
         }
 
-        userPools[_realityId][msg.sender].claimed = true;
+        userPools[_realityId][user].claimed = true;
 
         Action winningSide;
         if (realities[_realityId].totalAmountForks > realities[_realityId].totalAmountBurns) {
@@ -94,9 +99,9 @@ contract Kaos is IKaos, ReentrancyGuard {
 
         uint256 stakedAmount;
         if (winningSide == Action.FORK) {
-            stakedAmount = userPools[_realityId][msg.sender].totalAmountForks;
+            stakedAmount = userPools[_realityId][user].totalAmountForks;
         } else {
-            stakedAmount = userPools[_realityId][msg.sender].totalAmountBurns;
+            stakedAmount = userPools[_realityId][user].totalAmountBurns;
         }
 
         uint256 totalStakedAmount;
@@ -108,8 +113,9 @@ contract Kaos is IKaos, ReentrancyGuard {
 
         // Reward = (User Stake / Total Staked) * Total Kaos
         uint256 reward = ((stakedAmount * realities[_realityId].totalAmount) / totalStakedAmount);
-        kaosToken.transfer(msg.sender, reward);
-        emit Claimed(_realityId, msg.sender, reward);
+        SafeTransferLib.safeTransferFrom(address(kaosToken), address(this), user, reward);
+
+        emit Claimed(_realityId, user, reward);
     }
 
     // Fallback
