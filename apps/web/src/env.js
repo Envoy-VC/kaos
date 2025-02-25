@@ -4,6 +4,7 @@ import { z } from 'zod';
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(['development', 'test', 'production']),
+    MISTRAL_API_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_REOWN_PROJECT_ID: z.string(),
