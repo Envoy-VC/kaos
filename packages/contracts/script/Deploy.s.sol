@@ -9,12 +9,10 @@ contract DeployScript is Script {
     function setUp() public {}
 
     function run() public {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        address deployerAddress = vm.addr(deployerPrivateKey);
-        vm.startBroadcast(deployerPrivateKey);
+        address deployerAddress = 0x9e6DA9202eD28761782330210e3D018e1Fdc484b;
+        vm.startBroadcast();
 
         console.log("Deploying with deployer address", deployerAddress);
-
         KaosToken token = new KaosToken(deployerAddress);
         Kaos kaos = new Kaos(address(token));
         console.log("Token deployed at address: %s", address(token));
