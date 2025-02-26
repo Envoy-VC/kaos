@@ -68,8 +68,6 @@ contract Kaos is IKaos, ReentrancyGuard {
 
         SafeTransferLib.safeTransferFrom(address(kaosToken), user, address(this), _amount);
 
-        kaosToken.transferFrom(user, address(this), _amount);
-
         if (action == Action.FORK) {
             realities[_realityId].totalAmountForks += _amount;
             userPools[_realityId][user].totalAmountForks += _amount;

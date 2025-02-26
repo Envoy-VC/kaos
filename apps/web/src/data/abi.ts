@@ -166,7 +166,7 @@ export const KAOS_ABI = [
       {
         name: 'realityId',
         type: 'bytes',
-        indexed: false,
+        indexed: true,
         internalType: 'bytes',
       },
       {
@@ -203,7 +203,7 @@ export const KAOS_ABI = [
       {
         name: 'realityId',
         type: 'bytes',
-        indexed: false,
+        indexed: true,
         internalType: 'bytes',
       },
       {
@@ -228,7 +228,7 @@ export const KAOS_ABI = [
       {
         name: 'realityId',
         type: 'bytes',
-        indexed: false,
+        indexed: true,
         internalType: 'bytes',
       },
     ],

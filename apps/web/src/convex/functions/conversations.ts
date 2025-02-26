@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
+import { api } from '../_generated/api';
 import type { Id } from '../_generated/dataModel';
-import { internalMutation, mutation, query } from '../_generated/server';
+import { action, mutation, query } from '../_generated/server';
 import { getOrCreateUser } from './user';
 
 export const sendMessage = mutation({
@@ -30,30 +31,32 @@ export const sendMessage = mutation({
       },
     });
 
-    // if (filteredMentions.includes('snickerdoodle')) {
-    //   await ctx.scheduler.runAfter(
-    //     100,
-    //     internal.functions.conversations.callSnickerdoodle,
-    //     {
-    //       realityId: args.realityId,
-    //       content: args.content,
-    //       address: args.address,
-    //     }
-    //   );
-    // }
+    if (filteredMentions.includes('snickerdoodle')) {
+      await ctx.scheduler.runAfter(
+        100,
+        api.functions.conversations.callSnickerdoodle,
+        {
+          realityId: args.realityId,
+          content: args.content,
+          address: args.address,
+        }
+      );
+    }
   },
 });
 
-export const callSnickerdoodle = internalMutation({
+export const callSnickerdoodle = action({
   args: {
     realityId: v.id('realities'),
     content: v.string(),
     address: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await getOrCreateUser(ctx, { address: args.address });
+    const user = await ctx.runMutation(api.functions.user.getOrCreateUser, {
+      address: args.address,
+    });
     const res = await fetch(
-      'http://localhost:3002/c4fc38c7-224c-0721-b34d-e99a2edbabdf/message',
+      `${process.env.KAOS_AGENT_HOST}/c4fc38c7-224c-0721-b34d-e99a2edbabdf/message`,
       {
         method: 'POST',
         headers: {
@@ -76,13 +79,34 @@ export const callSnickerdoodle = internalMutation({
 
     if (!message) return;
 
-    await ctx.db.insert('messages', {
-      reality: args.realityId,
+    await ctx.runMutation(api.functions.conversations.addMessage, {
+      realityId: args.realityId,
       // biome-ignore lint/nursery/noSecrets: not a secret
       sender: 'jd7dsenpt4m9390739r2b5envn7b0njv' as Id<'users'>,
       content: message.text,
       metadata: {
         mentions: [],
+      },
+    });
+  },
+});
+
+export const addMessage = mutation({
+  args: {
+    realityId: v.id('realities'),
+    content: v.string(),
+    sender: v.id('users'),
+    metadata: v.object({
+      mentions: v.array(v.string()),
+    }),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert('messages', {
+      reality: args.realityId,
+      sender: args.sender,
+      content: args.content,
+      metadata: {
+        mentions: args.metadata.mentions,
       },
     });
   },
