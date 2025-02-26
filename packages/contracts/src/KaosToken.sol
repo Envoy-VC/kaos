@@ -35,6 +35,10 @@ contract KaosToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit 
         SafeTransferLib.safeTransferETH(owner(), amount);
     }
 
+    function getTokensForEth(uint256 amount) public view returns (uint256) {
+        return amount * INITIAL_PRICE;
+    }
+
     // The following functions are overrides required by Solidity.
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Pausable) {
         super._update(from, to, value);

@@ -54,6 +54,16 @@
           }
         }
       }
+    },
+    {
+      "include": ["apps/web/src/data/**/*.ts"],
+      "linter": {
+        "rules": {
+          "nursery": {
+            "noSecrets": "off"
+          }
+        }
+      }
     }
   ]
 }
