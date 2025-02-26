@@ -7,9 +7,10 @@ import { ChatContainer } from './chat-container';
 
 interface KaosChatProps {
   realityId: string;
+  refreshAll: () => Promise<void>;
 }
 
-export const KaosChat = ({ realityId }: KaosChatProps) => {
+export const KaosChat = ({ realityId, refreshAll }: KaosChatProps) => {
   const { address } = useAccount();
   const messages = useConvexQuery(api.functions.conversations.getMessages, {
     realityId: realityId as Id<'realities'>,
@@ -18,7 +19,10 @@ export const KaosChat = ({ realityId }: KaosChatProps) => {
   return (
     <div className='flex h-[75dvh] basis-1/3 flex-col justify-between gap-3 rounded-2xl border-2 border-black bg-[#F6F8FA] p-4'>
       <ChatContainer messages={messages ?? []} />
-      <ChatBox realityId={realityId} />
+      <ChatBox
+        realityId={realityId}
+        refreshAll={refreshAll}
+      />
     </div>
   );
 };

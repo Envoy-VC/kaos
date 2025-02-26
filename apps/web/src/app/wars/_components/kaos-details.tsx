@@ -1,12 +1,14 @@
+import type { api } from '~/convex/_generated/api';
 import type { Reality } from '~/types';
 import { KaosCharts } from './kaos-charts';
 import { KaosStats } from './kaos-stats';
 
 interface KaosDetailsProps {
   reality: Reality;
+  transactions: typeof api.functions.transactions.getTransactions._returnType;
 }
 
-export const KaosDetails = ({ reality }: KaosDetailsProps) => {
+export const KaosDetails = ({ reality, transactions }: KaosDetailsProps) => {
   return (
     <div className='h-full w-full basis-1/4 rounded-2xl border-2 border-black bg-[#F6F8FA] font-comic'>
       <div className='flex h-full flex-col'>
@@ -24,7 +26,7 @@ export const KaosDetails = ({ reality }: KaosDetailsProps) => {
           </div>
         </div>
         <div className='flex h-full w-full flex-col gap-2 px-4 pb-4 md:flex-row'>
-          <KaosCharts />
+          <KaosCharts transactions={transactions} />
           <KaosStats reality={reality} />
         </div>
       </div>

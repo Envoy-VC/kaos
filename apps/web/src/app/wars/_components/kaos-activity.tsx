@@ -1,68 +1,24 @@
+import type { api } from '~/convex/_generated/api';
+import { humanizeEther } from '~/lib/helpers';
 import { KaosActivityCard } from './kaos-activity-card';
 
-export const KaosActivity = () => {
+interface KaosActivityCardProps {
+  transactions: typeof api.functions.transactions.getTransactions._returnType;
+}
+
+export const KaosActivity = ({ transactions }: KaosActivityCardProps) => {
   return (
     <div className='flex w-full basis-3/4 flex-col gap-2 overflow-y-scroll rounded-2xl border-2 border-black bg-[#FDD2E1] p-4'>
-      <KaosActivityCard
-        address='0xc0d86456F6f2930b892f3DAD007CDBE32c081FE6'
-        amount='1.34M'
-        type='fork'
-      />
-      <KaosActivityCard
-        address='0x47Ee898A771ffba0B6fcA1913006353e567aE8a0'
-        amount='762K'
-        type='burn'
-      />
-      <KaosActivityCard
-        address='0xc0d86456F6f2930b892f3DAD007CDBE32c081FE6'
-        amount='2.11M'
-        type='fork'
-      />
-      <KaosActivityCard
-        address='0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1'
-        amount='120K'
-        type='burn'
-      />
-      <KaosActivityCard
-        address='0x00A2895816e64F152FF81c8A931DC1bd9F5c3ce3'
-        amount='2.98M'
-        type='burn'
-      />
-      <KaosActivityCard
-        address='0xe269688F24e1C7487f649fC3dCD99A4Bf15bDaA1'
-        amount='998K'
-        type='fork'
-      />
-      <KaosActivityCard
-        address='0xc0d86456F6f2930b892f3DAD007CDBE32c081FE6'
-        amount='1.34M'
-        type='fork'
-      />
-      <KaosActivityCard
-        address='0x47Ee898A771ffba0B6fcA1913006353e567aE8a0'
-        amount='762K'
-        type='burn'
-      />
-      <KaosActivityCard
-        address='0xc0d86456F6f2930b892f3DAD007CDBE32c081FE6'
-        amount='2.11M'
-        type='fork'
-      />
-      <KaosActivityCard
-        address='0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1'
-        amount='120K'
-        type='burn'
-      />
-      <KaosActivityCard
-        address='0x00A2895816e64F152FF81c8A931DC1bd9F5c3ce3'
-        amount='2.98M'
-        type='burn'
-      />
-      <KaosActivityCard
-        address='0xe269688F24e1C7487f649fC3dCD99A4Bf15bDaA1'
-        amount='998K'
-        type='fork'
-      />
+      {[...transactions].reverse().map((tx) => {
+        return (
+          <KaosActivityCard
+            key={tx.id}
+            address={tx.sender.address}
+            amount={humanizeEther(tx.amount)}
+            type={tx.action}
+          />
+        );
+      })}
     </div>
   );
 };

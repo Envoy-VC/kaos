@@ -15,7 +15,7 @@ import type { AppRouter } from '~/server/api/root';
 import { createQueryClient } from './query-client';
 
 let clientQueryClientSingleton: QueryClient | undefined;
-const getQueryClient = () => {
+export const getQueryClient = () => {
   if (typeof window === 'undefined') {
     // Server: always make a new query client
     return createQueryClient();
@@ -40,9 +40,8 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
+const queryClient = getQueryClient();
 export const TRPCReactProvider = (props: { children: ReactNode }) => {
-  const queryClient = getQueryClient();
-
   const trpcClient = useMemo(
     () =>
       api.createClient({

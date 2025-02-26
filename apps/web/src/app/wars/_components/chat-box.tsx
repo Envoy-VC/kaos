@@ -20,9 +20,10 @@ type Percentage = (typeof percentages)[number];
 
 interface ChatBoxProps {
   realityId: string;
+  refreshAll: () => Promise<void>;
 }
 
-export const ChatBox = ({ realityId }: ChatBoxProps) => {
+export const ChatBox = ({ realityId, refreshAll }: ChatBoxProps) => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [amount, setAmount] = useState<string>('0');
@@ -61,6 +62,10 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
 
   const sendMessage = useConvexMutation(
     api.functions.conversations.sendMessage
+  );
+
+  const addTransaction = useConvexMutation(
+    api.functions.transactions.addTransaction
   );
 
   const onSendMessage = async () => {
@@ -106,6 +111,13 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
         content,
         realityId: realityId as Id<'realities'>,
       });
+      await addTransaction({
+        reality: realityId as Id<'realities'>,
+        sender: address,
+        action: currentAction,
+        amount: Number(parseEther(amount)),
+      });
+      await refreshAll();
       setContent('');
       setAmount('0');
       toast.success('💬 Message sent!', { id });
