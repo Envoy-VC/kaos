@@ -1,83 +1,46 @@
 import { cn } from '@kaos/ui/lib/utils';
-
-const messages = [
-  {
-    message: 'Hey @snickerdoodle, what are you up to?',
-    senderType: 'me',
-    sender: 'me',
-  },
-  {
-    message: "Howdy matey! I'm just hanging out, what about you?",
-    senderType: 'other',
-    sender: 'snickerdoodle',
-  },
-  {
-    message: 'So which is better, coke or pepsi?',
-    senderType: 'me',
-    sender: 'me',
-  },
-  {
-    message: 'I prefer coke, it has a lower calorie count.',
-    senderType: 'other',
-    sender: 'snickerdoodle',
-  },
-  {
-    message: 'I see, I guess I should try it out next time.',
-    senderType: 'me',
-    sender: 'me',
-  },
-  {
-    message: 'That sounds like a great idea!',
-    senderType: 'other',
-    sender: 'snickerdoodle',
-  },
-  {
-    message: 'Hey @snickerdoodle, what are you up to?',
-    senderType: 'me',
-    sender: 'me',
-  },
-  {
-    message: "Howdy matey! I'm just hanging out, what about you?",
-    senderType: 'other',
-    sender: 'snickerdoodle',
-  },
-] as const;
+import type { api } from '~/convex/_generated/api';
 
 interface ChatMessageProps {
-  message: string;
-  senderType: 'me' | 'other';
-  sender: string;
+  message: (typeof api.functions.conversations.getMessages._returnType)[number];
 }
 
-const ChatMessage = ({ message, sender, senderType }: ChatMessageProps) => {
+const ChatMessage = ({ message }: ChatMessageProps) => {
   return (
     <div
       className={cn(
         'flex w-full',
-        senderType === 'me' ? 'justify-end' : 'justify-start'
+        message.sender.type === 'me' ? 'justify-end' : 'justify-start'
       )}
     >
       <div
         className={cn(
           'flex max-w-xs flex-col rounded-lg border-2 border-black p-2',
-          senderType === 'me' ? 'bg-[#D3DEFF]' : 'bg-white'
+          message.sender.type === 'me' ? 'bg-[#D3DEFF]' : 'bg-white'
         )}
       >
-        <div>{sender}</div>
-        <div className='text-sm'>{message}</div>
+        <div className='font-bold text-xs'>
+          {message.sender.username ??
+            `${message.sender.address.slice(0, 6)}...${message.sender.address.slice(-4)}`}
+        </div>
+        <div className='text-sm'>{message.content}</div>
       </div>
     </div>
   );
 };
 
-export const ChatContainer = () => {
+interface ChatContainerProps {
+  messages: typeof api.functions.conversations.getMessages._returnType;
+}
+
+export const ChatContainer = ({ messages }: ChatContainerProps) => {
   return (
     <div className='flex h-full w-full flex-col gap-2 overflow-scroll'>
       {messages.map((message, index) => {
         return (
           <ChatMessage
             key={`message-${String(index)}`}
-            {...message}
+            message={message}
           />
         );
       })}

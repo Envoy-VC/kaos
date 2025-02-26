@@ -1,2 +1,6 @@
 .env
 .tee-cloud
+**/bin
+**/obj
+**/node_modules
+.git

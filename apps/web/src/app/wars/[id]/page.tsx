@@ -28,7 +28,7 @@ const WarPage = ({
         <KaosDetails reality={reality} />
         <KaosActivity />
       </div>
-      <KaosChat />
+      <KaosChat realityId={reality.id} />
     </div>
   );
 };

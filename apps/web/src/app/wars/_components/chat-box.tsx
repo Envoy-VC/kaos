@@ -3,21 +3,111 @@
 import { Button } from '@kaos/ui/components/button';
 import { Input } from '@kaos/ui/components/input';
 import { Textarea } from '@kaos/ui/components/textarea';
+import { readContract, waitForTransactionReceipt } from '@wagmi/core';
+import { useMutation as useConvexMutation } from 'convex/react';
 import { ChevronsUpDownIcon } from 'lucide-react';
-import { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
+import { toast } from 'sonner';
+import { formatEther, parseEther, toHex } from 'viem';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { api } from '~/convex/_generated/api';
+import type { Id } from '~/convex/_generated/dataModel';
+import { config, kaosConfig, kaosTokenConfig } from '~/lib/wagmi';
 import { cn } from '../../../../../../packages/ui/src/lib/utils';
 
 const percentages = ['0', '25', '50', '100'] as const;
 type Percentage = (typeof percentages)[number];
 
-export const ChatBox = () => {
+interface ChatBoxProps {
+  realityId: string;
+}
+
+export const ChatBox = ({ realityId }: ChatBoxProps) => {
+  const { address } = useAccount();
+  const { writeContractAsync } = useWriteContract();
+  const [amount, setAmount] = useState<string>('0');
+  const [content, setContent] = useState<string>('');
   const [currentAction, setCurrentAction] = useState<'fork' | 'burn'>('fork');
   const [currentPercentage, setCurrentPercentage] = useState<Percentage | null>(
     null
   );
 
+  const { data: balance } = useReadContract({
+    ...kaosTokenConfig,
+    functionName: 'balanceOf',
+    args: [address ?? '0x0'],
+  });
+
+  const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (
+      e.target.value === '' ||
+      e.target.value === '0' ||
+      e.target.value === undefined
+    ) {
+      setAmount('0');
+      setCurrentPercentage(null);
+      return;
+    }
+    setAmount(e.target.value);
+  };
+
   const handlePercentageClick = (percentage: Percentage) => {
     setCurrentPercentage(percentage);
+    const amount = formatEther(
+      ((balance ?? 0n) * BigInt(percentage)) / BigInt(100)
+    );
+    setAmount(amount);
+  };
+
+  const sendMessage = useConvexMutation(
+    api.functions.conversations.sendMessage
+  );
+
+  const onSendMessage = async () => {
+    const id = toast.loading('Sending message...');
+    try {
+      if (!address) {
+        throw new Error('Please connect your wallet');
+      }
+
+      if (amount !== '0') {
+        const allowance = await readContract(config, {
+          ...kaosTokenConfig,
+          functionName: 'allowance',
+          args: [address, kaosConfig.address],
+        });
+
+        if (allowance < parseEther(amount)) {
+          const allowanceHash = await writeContractAsync({
+            ...kaosTokenConfig,
+            functionName: 'approve',
+            args: [kaosConfig.address, parseEther(amount)],
+          });
+          await waitForTransactionReceipt(config, { hash: allowanceHash });
+        }
+
+        const hash = await writeContractAsync({
+          ...kaosConfig,
+          functionName: 'addToReality',
+          args: [
+            toHex(realityId),
+            parseEther(amount),
+            currentAction === 'fork' ? 0 : 1,
+            address,
+          ],
+        });
+        await waitForTransactionReceipt(config, { hash });
+      }
+      await sendMessage({
+        address,
+        content,
+        realityId: realityId as Id<'realities'>,
+      });
+      toast.success('Message sent!', { id });
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong', { id });
+    }
   };
 
   return (
@@ -25,6 +115,8 @@ export const ChatBox = () => {
       <Textarea
         placeholder='Type your message here...'
         rows={3}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
       />
       <div className='flex flex-col items-center gap-2'>
         <div className='flex w-full basis-2/3 flex-col gap-1'>
@@ -49,6 +141,8 @@ export const ChatBox = () => {
             <Input
               placeholder='0'
               className='w-full'
+              value={amount}
+              onChange={onAmountChange}
             />
             <Button
               onClick={() => {
@@ -67,7 +161,12 @@ export const ChatBox = () => {
           </div>
         </div>
         <div className='w-full basis-1/3'>
-          <Button className='w-full'>Send</Button>
+          <Button
+            className='w-full'
+            onClick={onSendMessage}
+          >
+            Send
+          </Button>
         </div>
       </div>
     </div>

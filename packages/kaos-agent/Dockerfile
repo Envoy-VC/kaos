@@ -22,18 +22,18 @@ COPY tsconfig.json ./
 COPY ./src ./src
 
 # Install dependencies and build the project
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install
 
 # install @anush/tokenizers-arm64-gnu
-RUN apt-get update && \
-    apt-get install -y curl pkg-config libssl-dev build-essential && \
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# RUN apt-get update && \
+#     apt-get install -y curl pkg-config libssl-dev build-essential && \
+#     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-ENV PATH="/root/.cargo/bin:${PATH}"
+# ENV PATH="/root/.cargo/bin:${PATH}"
 
-RUN cd /app/node_modules/.pnpm/fastembed@1.14.1/node_modules/@anush008/tokenizers && \
-    cargo build && \
-    cp /app/node_modules/.pnpm/fastembed@1.14.1/node_modules/@anush008/tokenizers/target/debug/libanush008_tokenizers.so /app/node_modules/.pnpm/fastembed@1.14.1/node_modules/@anush008/tokenizers/tokenizers.linux-arm64-gnu.node
+# RUN cd /app/node_modules/.pnpm/fastembed@1.14.1/node_modules/@anush008/tokenizers && \
+#     cargo build && \
+#     cp /app/node_modules/.pnpm/fastembed@1.14.1/node_modules/@anush008/tokenizers/target/debug/libanush008_tokenizers.so /app/node_modules/.pnpm/fastembed@1.14.1/node_modules/@anush008/tokenizers/tokenizers.linux-arm64-gnu.node
 
 RUN pnpm build 
 

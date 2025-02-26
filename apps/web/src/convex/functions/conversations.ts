@@ -1,7 +1,6 @@
 import { v } from 'convex/values';
-import { internal } from '../_generated/api';
 import type { Id } from '../_generated/dataModel';
-import { internalMutation, mutation } from '../_generated/server';
+import { internalMutation, mutation, query } from '../_generated/server';
 import { getOrCreateUser } from './user';
 
 export const sendMessage = mutation({
@@ -31,17 +30,17 @@ export const sendMessage = mutation({
       },
     });
 
-    if (filteredMentions.includes('snickerdoodle')) {
-      await ctx.scheduler.runAfter(
-        100,
-        internal.functions.conversations.callSnickerdoodle,
-        {
-          realityId: args.realityId,
-          content: args.content,
-          address: args.address,
-        }
-      );
-    }
+    // if (filteredMentions.includes('snickerdoodle')) {
+    //   await ctx.scheduler.runAfter(
+    //     100,
+    //     internal.functions.conversations.callSnickerdoodle,
+    //     {
+    //       realityId: args.realityId,
+    //       content: args.content,
+    //       address: args.address,
+    //     }
+    //   );
+    // }
   },
 });
 
@@ -86,5 +85,34 @@ export const callSnickerdoodle = internalMutation({
         mentions: [],
       },
     });
+  },
+});
+
+export const getMessages = query({
+  args: { realityId: v.id('realities'), address: v.string() },
+  handler: async (ctx, args) => {
+    const messages = await ctx.db
+      .query('messages')
+      .withIndex('by_reality', (q) => q.eq('reality', args.realityId))
+      .collect();
+
+    const data = [];
+    for (const message of messages) {
+      const sender = await ctx.db.get(message.sender);
+      if (sender) {
+        data.push({
+          sender: {
+            id: sender._id,
+            type: sender.address === args.address ? 'me' : 'other',
+            address: sender.address,
+            username: sender.username,
+          },
+          content: message.content,
+          metadata: message.metadata,
+        });
+      }
+    }
+
+    return data;
   },
 });

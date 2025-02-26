@@ -1,5 +1,6 @@
 import { readContract } from '@wagmi/core';
-import { toHex } from 'viem';
+import { http, createPublicClient, toHex } from 'viem';
+import { monadTestnet } from 'viem/chains';
 import { api } from '~/convex/_generated/api';
 import type { Id } from '~/convex/_generated/dataModel';
 import { config, kaosConfig } from '~/lib/wagmi';
@@ -96,4 +97,25 @@ export const getReality = async (id: string): Promise<Reality> => {
   };
 
   return data;
+};
+
+export const publicClient = createPublicClient({
+  chain: monadTestnet,
+  transport: http(),
+});
+
+const getAllTransactions = async (fromBlock: number, realityId: string) => {
+  const filter = await publicClient.createContractEventFilter({
+    ...kaosConfig,
+    // biome-ignore lint/nursery/noSecrets: safe
+    eventName: 'AddKaosToReality',
+    fromBlock: BigInt(fromBlock),
+    toBlock: 'latest',
+    args: {
+      realityId: toHex(realityId),
+    },
+  });
+
+  const logs = await publicClient.getFilterLogs({ filter });
+  console.log(logs);
 };

@@ -32,11 +32,11 @@ interface IKaos {
     error AlreadyClaimed();
 
     // Events
-    event RealityCreated(bytes realityId);
+    event RealityCreated(bytes indexed realityId);
     event AddKaosToReality(
-        bytes realityId, uint256 amount, Action action, uint256 totalForksAmount, uint256 totalBurnsAmount
+        bytes indexed realityId, uint256 amount, Action action, uint256 totalForksAmount, uint256 totalBurnsAmount
     );
-    event Claimed(bytes realityId, address user, uint256 amount);
+    event Claimed(bytes indexed realityId, address user, uint256 amount);
 
     function createReality(bytes calldata _realityId) external;
     function addToReality(bytes calldata _realityId, uint256 _amount, Action action, address user) external;
