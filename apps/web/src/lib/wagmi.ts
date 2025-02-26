@@ -21,12 +21,12 @@ export const config = wagmiAdapter.wagmiConfig;
 
 export const kaosConfig = {
   // biome-ignore lint/nursery/noSecrets: ca
-  address: '0x8dBE8Fe8600D0A0a4267a3afE8360C5d6d94424A',
+  address: '0x84CAc4c0E79670F97bB01A662Df93F457a53E4CB',
   abi: KAOS_ABI,
 } as const;
 
 export const kaosTokenConfig = {
   // biome-ignore lint/nursery/noSecrets: ca
-  address: '0x262db8107886E96f3277b8189265669710Da27b3',
+  address: '0xe50A93440c506Da80ffa5BA02705590e3b3fb78b',
   abi: KAOS_TOKEN_ABI,
 } as const;
