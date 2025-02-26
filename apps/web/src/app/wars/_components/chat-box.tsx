@@ -77,6 +77,8 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
           args: [address, kaosConfig.address],
         });
 
+        toast.loading('📢 Approving tokens for the chaos gods.', { id });
+
         if (allowance < parseEther(amount)) {
           const allowanceHash = await writeContractAsync({
             ...kaosTokenConfig,
@@ -96,6 +98,7 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
             address,
           ],
         });
+        toast.loading('💸 Tokens sacrificed to the chaos gods.', { id });
         await waitForTransactionReceipt(config, { hash });
       }
       await sendMessage({
@@ -103,10 +106,12 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
         content,
         realityId: realityId as Id<'realities'>,
       });
-      toast.success('Message sent!', { id });
+      setContent('');
+      setAmount('0');
+      toast.success('💬 Message sent!', { id });
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong', { id });
+      toast.error('💣 Critical chaos failure.', { id });
     }
   };
 

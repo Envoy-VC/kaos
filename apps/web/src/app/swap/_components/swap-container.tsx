@@ -53,6 +53,8 @@ export const SwapContainer = () => {
       });
       toast.loading('🛸 Transaction orbiting Saturn. ETA: 5 sec.', { id });
       await waitForTransactionReceipt(config, { hash });
+      setMonadAmount('0');
+      setKaosAmount('0');
       toast.success('🎉 Swapped successfully!', { id });
     } catch (error) {
       toast.error('😢 Something went wrong', { id });

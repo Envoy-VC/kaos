@@ -62,6 +62,7 @@ export const CreateForm = () => {
       toast.success(`🎉 Reality #${Math.floor(Math.random() * 10000)} live! `, {
         id,
       });
+      setOpinion('');
     } catch (error: unknown) {
       console.log(error);
       toast.error((error as Error).message, { id });
