@@ -13,7 +13,7 @@ const Snickerdoodle = () => {
             Snickerdoodle is the AI chaos engine of Kaos, created by a
             sleep-deprived coder to turn debates into reality wars. Her job:
             split your hot takes into parallel universes, stir drama, and reward
-            the messiest arguments with Chaos Points. Tag
+            the messiest arguments with $KAOS Points. Tag
             <span className='ml-1 font-bold text-black'>@snickerdoodle</span> in
             Reality Chat to provoke her into roasting your takes, rigging
             debates, or dropping absurd twists. She lives to break logic, blame

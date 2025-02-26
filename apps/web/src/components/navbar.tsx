@@ -18,6 +18,11 @@ const navLinks = [
     label: 'Meet Snickerdoodle',
     href: '/snickerdoodle',
   },
+  {
+    key: 'swap',
+    label: 'Get $KAOS',
+    href: '/swap',
+  },
 ];
 
 export const Navbar = () => {

@@ -64,6 +64,6 @@ COPY --from=builder /app/src /app/src
 COPY --from=builder /app/dist /app/dist
 COPY --from=builder /app/tsconfig.json /app/
 
-EXPOSE 3000
+EXPOSE 3000:3000
 # Set the command to run the application
 CMD ["pnpm", "start", "--non-interactive"]
