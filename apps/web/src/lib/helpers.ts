@@ -1,15 +1,16 @@
 export const humanizeNumber = (num: number) => {
-  // format large numbers in K, M, B, T
-  if (num >= 1e9) {
-    return `${(num / 1e9).toFixed(2)}B`;
+  if (num < 1000) return num.toString();
+
+  const units = ['K', 'M', 'B', 'T'];
+  let unitIndex = -1;
+  let formattedNum = num;
+
+  while (formattedNum >= 1000 && unitIndex < units.length - 1) {
+    formattedNum /= 1000;
+    unitIndex++;
   }
-  if (num >= 1e6) {
-    return `${(num / 1e6).toFixed(2)}M`;
-  }
-  if (num >= 1e3) {
-    return `${(num / 1e3).toFixed(0)}K`;
-  }
-  return String(num);
+
+  return `${formattedNum.toFixed(2)}${units[unitIndex]}`;
 };
 
 export const humanizeEther = (num: number | bigint) => {
