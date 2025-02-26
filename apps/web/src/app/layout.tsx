@@ -4,6 +4,7 @@ import { TRPCReactProvider } from '~/trpc/react';
 
 import '@kaos/ui/globals.css';
 
+import { Toaster } from '@kaos/ui/components/sonner';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import { Navbar } from '~/components';
@@ -26,6 +27,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
             <ConvexClientProvider>
               <Navbar />
               {children}
+              <Toaster />
             </ConvexClientProvider>
           </Web3Provider>
         </TRPCReactProvider>

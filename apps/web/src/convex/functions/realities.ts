@@ -69,3 +69,18 @@ export const createReality = mutation({
     return newReality;
   },
 });
+
+export const deleteReality = mutation({
+  args: { id: v.id('realities') },
+  handler: async (ctx, args) => {
+    const reality = await ctx.db.get(args.id);
+
+    if (!reality) {
+      throw new Error('Reality not found');
+    }
+
+    await ctx.db.delete(args.id);
+
+    return reality;
+  },
+});

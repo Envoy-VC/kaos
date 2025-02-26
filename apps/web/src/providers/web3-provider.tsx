@@ -1,8 +1,8 @@
 'use client';
 
-import { baseSepolia } from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
 import type { ReactNode } from 'react';
+import { monadTestnet } from 'viem/chains';
 import { type Config, WagmiProvider, cookieToInitialState } from 'wagmi';
 import { projectId, wagmiAdapter } from '~/lib/wagmi';
 
@@ -16,8 +16,8 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [baseSepolia],
-  defaultNetwork: baseSepolia,
+  networks: [monadTestnet],
+  defaultNetwork: monadTestnet,
   themeMode: 'light',
   themeVariables: {
     '--w3m-font-family': 'Comic',
@@ -26,6 +26,9 @@ const modal = createAppKit({
   metadata: metadata,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
+  },
+  chainImages: {
+    10143: 'https://docs.monad.xyz/img/monad_logo.png',
   },
 });
 

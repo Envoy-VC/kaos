@@ -3,10 +3,11 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useMutation } from 'convex/react';
+import { useMutation as useConvexMutation } from 'convex/react';
 import { api } from '~/convex/_generated/api';
 
 import { waitForTransactionReceipt } from '@wagmi/core';
+import { toast } from 'sonner';
 import { toHex } from 'viem';
 import { useAccount, useWriteContract } from 'wagmi';
 import { config, kaosConfig } from '~/lib/wagmi';
@@ -15,19 +16,26 @@ import { generateReality } from '~/lib/ai';
 
 import { Button } from '@kaos/ui/components/button';
 import { Textarea } from '@kaos/ui/components/textarea';
-import { RotatingText } from '~/components';
-
 import CreatePoster from 'public/create-poster.png';
+import { RotatingText } from '~/components';
+import type { Id } from '~/convex/_generated/dataModel';
 import { ideas } from '~/data';
 
 export const CreateForm = () => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
-  const createReality = useMutation(api.functions.realities.createReality);
+  const createReality = useConvexMutation(
+    api.functions.realities.createReality
+  );
+  const deleteReality = useConvexMutation(
+    api.functions.realities.deleteReality
+  );
 
   const [opinion, setOpinion] = useState<string>('');
 
   const onCreateReality = async () => {
+    const id = toast.loading('⚡ Asking Snickerdoodle to split reality...');
+    let realityId = '';
     try {
       if (opinion.trim() === '') {
         throw new Error('Please enter your opinion');
@@ -43,14 +51,21 @@ export const CreateForm = () => {
         forkRealityTitle: generated.forkRealityTitle,
         burnRealityTitle: generated.burnRealityTitle,
       });
+      realityId = res._id;
+      toast.loading('🛸 Transaction orbiting Saturn. ETA: 5 sec.', { id });
       const hash = await writeContractAsync({
         ...kaosConfig,
         functionName: 'createReality',
         args: [toHex(res._id)],
       });
       await waitForTransactionReceipt(config, { hash });
-    } catch (error) {
+      toast.success(`🎉 Reality #${Math.floor(Math.random() * 10000)} live! `, {
+        id,
+      });
+    } catch (error: unknown) {
       console.log(error);
+      toast.error((error as Error).message, { id });
+      deleteReality({ id: realityId as Id<'realities'> }).catch(console.error);
     }
   };
 

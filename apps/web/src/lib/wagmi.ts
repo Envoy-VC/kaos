@@ -1,12 +1,12 @@
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { baseSepolia } from '@reown/appkit/networks';
 import { cookieStorage, createStorage } from '@wagmi/core';
+import { monadTestnet } from 'viem/chains';
 import { KAOS_ABI, KAOS_TOKEN_ABI } from '~/data/abi';
 import { env } from '~/env';
 
 export const projectId = env.NEXT_PUBLIC_REOWN_PROJECT_ID;
 
-export const networks = [baseSepolia];
+export const networks = [monadTestnet];
 
 export const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({
