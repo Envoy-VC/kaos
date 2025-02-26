@@ -34,6 +34,22 @@ contract Kaos is IKaos, ReentrancyGuard {
         });
     }
 
+    function getReality(bytes calldata _realityId) external view returns (Reality memory) {
+        return realities[_realityId];
+    }
+
+    function getRealities(bytes[] memory _realityIds) external view returns (Reality[] memory) {
+        Reality[] memory realitiesList = new Reality[](_realityIds.length);
+        for (uint256 i = 0; i < _realityIds.length; i++) {
+            realitiesList[i] = realities[_realityIds[i]];
+        }
+        return realitiesList;
+    }
+
+    function getUserPool(bytes calldata _realityId, address user) external view returns (UserPool memory) {
+        return userPools[_realityId][user];
+    }
+
     function addToReality(bytes calldata _realityId, uint256 _amount, Action action, address user)
         external
         nonReentrant

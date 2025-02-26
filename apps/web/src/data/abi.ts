@@ -37,6 +37,94 @@ export const KAOS_ABI = [
   },
   {
     type: 'function',
+    name: 'getRealities',
+    inputs: [{ name: '_realityIds', type: 'bytes[]', internalType: 'bytes[]' }],
+    outputs: [
+      {
+        name: '',
+        type: 'tuple[]',
+        internalType: 'struct IKaos.Reality[]',
+        components: [
+          { name: 'startAt', type: 'uint256', internalType: 'uint256' },
+          { name: 'endAt', type: 'uint256', internalType: 'uint256' },
+          { name: 'startBlock', type: 'uint256', internalType: 'uint256' },
+          { name: 'totalAmount', type: 'uint256', internalType: 'uint256' },
+          {
+            name: 'totalAmountForks',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'totalAmountBurns',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getReality',
+    inputs: [{ name: '_realityId', type: 'bytes', internalType: 'bytes' }],
+    outputs: [
+      {
+        name: '',
+        type: 'tuple',
+        internalType: 'struct IKaos.Reality',
+        components: [
+          { name: 'startAt', type: 'uint256', internalType: 'uint256' },
+          { name: 'endAt', type: 'uint256', internalType: 'uint256' },
+          { name: 'startBlock', type: 'uint256', internalType: 'uint256' },
+          { name: 'totalAmount', type: 'uint256', internalType: 'uint256' },
+          {
+            name: 'totalAmountForks',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'totalAmountBurns',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getUserPool',
+    inputs: [
+      { name: '_realityId', type: 'bytes', internalType: 'bytes' },
+      { name: 'user', type: 'address', internalType: 'address' },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'tuple',
+        internalType: 'struct IKaos.UserPool',
+        components: [
+          { name: 'totalAmount', type: 'uint256', internalType: 'uint256' },
+          {
+            name: 'totalAmountForks',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'totalAmountBurns',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          { name: 'claimed', type: 'bool', internalType: 'bool' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'kaosToken',
     inputs: [],
     outputs: [{ name: '', type: 'address', internalType: 'contract IERC20' }],

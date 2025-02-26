@@ -5,17 +5,28 @@ import KaosToken from 'public/kaos-token.png';
 
 interface ChaosCardProps {
   id: string;
-  title: string;
+  startAt: number;
+  endAt: number;
+  startBlock: number;
+  totalAmount: string;
+  totalAmountForks: string;
+  totalAmountBurns: string;
+  remainingTime: string;
+  metadata: {
+    title: string;
+    forkRealityTitle: string;
+    burnRealityTitle: string;
+  };
 }
 
-export const KaosCard = () => {
+export const KaosCard = (props: ChaosCardProps) => {
   return (
     <div className='flex h-full min-w-[20rem] flex-col gap-2 rounded-lg border-[3px] border-black bg-[#B2E7B9] px-4 py-3 font-comic sm:h-[12rem] sm:min-w-[30rem] sm:flex-row'>
       <div className='flex h-full w-full basis-2/3 flex-col justify-between gap-2 text-wrap'>
-        <div className='font-semibold text-2xl'>
-          Is Star Wars more iconic than Star Trek?
+        <div className='font-semibold text-2xl'>{props.metadata.title}</div>
+        <div className='font-bold text-neutral-700'>
+          ⏳ Collapse in: {props.remainingTime}
         </div>
-        <div className='font-bold text-neutral-700'>⏳ Collapse in: 2h 15m</div>
         <div className='flex flex-row items-center justify-between gap-2 sm:justify-start'>
           <Button
             className='!rounded-xl !text-lg h-10 w-full border-2 border-black'
@@ -34,10 +45,12 @@ export const KaosCard = () => {
       <div className='flex w-full basis-1/3 flex-row items-end justify-start gap-2 sm:flex-col sm:justify-between'>
         <div className='flex w-fit flex-row items-center justify-center gap-2 rounded-2xl border-2 border-black bg-white px-2 py-[2px]'>
           <div className='flex flex-row items-center gap-1'>
-            1.2M <CircleArrowUp className='rotate-45 text-green-500' />
+            {props.totalAmountForks}
+            <CircleArrowUp className='rotate-45 text-green-500' />
           </div>
           <div className='flex flex-row items-center gap-1'>
-            456K <CircleArrowUp className='-rotate-135 text-red-500' />
+            {props.totalAmountBurns}
+            <CircleArrowUp className='-rotate-135 text-red-500' />
           </div>
         </div>
         <div className='flex flex-row items-center gap-1 rounded-2xl border-2 border-black bg-white px-2 py-[2px]'>
@@ -46,7 +59,7 @@ export const KaosCard = () => {
             alt='kaos-logo'
             className='!h-6 !w-6 !rounded-full'
           />
-          <div>1.2K $KAOS</div>
+          <div>{props.totalAmount} $KAOS</div>
         </div>
       </div>
     </div>
