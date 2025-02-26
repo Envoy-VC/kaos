@@ -1,7 +1,7 @@
 import fs from 'node:fs';
-import net from 'node:net';
 import path from 'node:path';
 
+import net from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { DirectClient } from '@elizaos/client-direct';
 import {
@@ -19,25 +19,31 @@ import { character } from './character.ts';
 import { initializeClient } from './clients/index.ts';
 import { initializeDatabase } from './database/index.ts';
 
-const nodePlugin = createNodePlugin();
 const fileName = fileURLToPath(import.meta.url);
 const dirname = path.dirname(fileName);
 
 const checkPortAvailable = (port: number): Promise<boolean> => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const server = net.createServer();
 
+    // If there's an error, the port is likely in use or inaccessible.
     server.once('error', (err: NodeJS.ErrnoException) => {
-      if (err.code === 'EADDRINUSE') {
+      // EADDRINUSE means the port is already in use.
+      if (err.code === 'EADDRINUSE' || err.code === 'EACCES') {
         resolve(false);
+      } else {
+        reject(err);
       }
     });
 
+    // If the server starts listening, the port is available.
     server.once('listening', () => {
-      server.close();
-      resolve(true);
+      server.close(() => {
+        resolve(true);
+      });
     });
 
+    // Try to listen on the specified port.
     server.listen(port);
   });
 };
@@ -53,6 +59,7 @@ export function createAgent(
     'Creating runtime for character',
     character.name
   );
+  const nodePlugin = createNodePlugin();
 
   return new AgentRuntime({
     databaseAdapter: db,
@@ -94,7 +101,6 @@ async function startAgent(character: Character, directClient: DirectClient) {
     directClient.registerAgent(runtime);
 
     elizaLogger.debug(`Started ${character.name} as ${runtime.agentId}`);
-
     return runtime;
   } catch (error) {
     elizaLogger.error(
@@ -121,8 +127,13 @@ const startAgents = async () => {
   directClient.startAgent = async (character: Character) => {
     return await Promise.resolve(startAgent(character, directClient));
   };
+  if (serverPort !== Number.parseInt(process.env.SERVER_PORT)) {
+    elizaLogger.info(`Server started on alternate port ${serverPort}`);
+  } else {
+    elizaLogger.info(`Server Started on Port ${serverPort}`);
+  }
+
   directClient.start(serverPort);
-  elizaLogger.info(`Server Started on Port ${serverPort}`);
 };
 
 startAgents().catch((error) => {
