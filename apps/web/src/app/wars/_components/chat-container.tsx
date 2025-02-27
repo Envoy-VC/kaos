@@ -1,4 +1,5 @@
 import { cn } from '@kaos/ui/lib/utils';
+import { useEffect, useRef } from 'react';
 import type { api } from '~/convex/_generated/api';
 
 interface ChatMessageProps {
@@ -34,8 +35,27 @@ interface ChatContainerProps {
 }
 
 export const ChatContainer = ({ messages }: ChatContainerProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: need to update deps
+  useEffect(() => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+      const scrollTop = container.scrollTop;
+
+      if (scrollHeight - clientHeight - scrollTop < 300) {
+        container.scrollTo({ top: scrollHeight, behavior: 'smooth' });
+      }
+    }
+  }, [messages]);
+
   return (
-    <div className='flex h-full w-full flex-col gap-2 overflow-scroll'>
+    <div
+      className='flex h-full w-full flex-col gap-2 overflow-scroll'
+      ref={containerRef}
+    >
       {messages.map((message, index) => {
         return (
           <ChatMessage

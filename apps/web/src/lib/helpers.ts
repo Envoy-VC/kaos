@@ -20,6 +20,7 @@ export const humanizeEther = (num: number | bigint) => {
 };
 
 export const formatTime = (time: number) => {
+  if (time <= 0) return 'Collapsed';
   // format in xh xm
   const hours = Math.floor(time / 3600);
   const minutes = Math.floor((time % 3600) / 60);

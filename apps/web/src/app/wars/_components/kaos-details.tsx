@@ -4,7 +4,7 @@ import { KaosCharts } from './kaos-charts';
 import { KaosStats } from './kaos-stats';
 
 interface KaosDetailsProps {
-  reality: Reality;
+  reality?: Reality;
   transactions: typeof api.functions.transactions.getTransactions._returnType;
 }
 
@@ -22,7 +22,7 @@ export const KaosDetails = ({ reality, transactions }: KaosDetailsProps) => {
         <div className='flex w-full flex-col gap-1 p-4'>
           <div className='px-2 font-bold text-sm'>Nuclear Take: </div>
           <div className='rounded-2xl border-2 border-black bg-white px-4 py-2 text-3xl'>
-            {reality.metadata.title}
+            {reality?.metadata.title ?? 'Loading...'}
           </div>
         </div>
         <div className='flex h-full w-full flex-col gap-2 px-4 pb-4 md:flex-row'>

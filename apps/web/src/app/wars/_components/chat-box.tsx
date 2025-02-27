@@ -3,6 +3,7 @@
 import { Button } from '@kaos/ui/components/button';
 import { Input } from '@kaos/ui/components/input';
 import { Textarea } from '@kaos/ui/components/textarea';
+import { useQueryClient } from '@tanstack/react-query';
 import { readContract, waitForTransactionReceipt } from '@wagmi/core';
 import { useMutation as useConvexMutation } from 'convex/react';
 import { ChevronsUpDownIcon } from 'lucide-react';
@@ -19,19 +20,21 @@ const percentages = ['0', '25', '50', '100'] as const;
 type Percentage = (typeof percentages)[number];
 
 interface ChatBoxProps {
-  realityId: string;
-  refreshAll: () => Promise<void>;
+  realityId?: string;
 }
 
-export const ChatBox = ({ realityId, refreshAll }: ChatBoxProps) => {
+export const ChatBox = ({ realityId }: ChatBoxProps) => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
+
   const [amount, setAmount] = useState<string>('0');
   const [content, setContent] = useState<string>('');
   const [currentAction, setCurrentAction] = useState<'fork' | 'burn'>('fork');
   const [currentPercentage, setCurrentPercentage] = useState<Percentage | null>(
     null
   );
+
+  const queryClient = useQueryClient();
 
   const { data: balance } = useReadContract({
     ...kaosTokenConfig,
@@ -71,6 +74,9 @@ export const ChatBox = ({ realityId, refreshAll }: ChatBoxProps) => {
   const onSendMessage = async () => {
     const id = toast.loading('Sending message...');
     try {
+      if (!realityId) {
+        throw new Error('Reality Not Found');
+      }
       if (!address) {
         throw new Error('Please connect your wallet');
       }
@@ -117,7 +123,7 @@ export const ChatBox = ({ realityId, refreshAll }: ChatBoxProps) => {
         action: currentAction,
         amount: Number(parseEther(amount)),
       });
-      await refreshAll();
+      await queryClient.invalidateQueries({ queryKey: ['wars', realityId] });
       setContent('');
       setAmount('0');
       toast.success('💬 Message sent!', { id });

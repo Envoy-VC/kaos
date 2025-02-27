@@ -4,7 +4,7 @@ import KaosToken from 'public/kaos-token.png';
 import type { Reality } from '~/types';
 
 interface KaosStatsProps {
-  reality: Reality;
+  reality?: Reality;
 }
 
 export const KaosStats = ({ reality }: KaosStatsProps) => {
@@ -18,7 +18,7 @@ export const KaosStats = ({ reality }: KaosStatsProps) => {
               alt='kaos-logo'
               className='!size-8 !rounded-full border-2 border-black'
             />
-            <div>{reality.totalAmountForks.formatted} $KAOS</div>
+            <div>{reality?.totalAmountForks.formatted ?? '0'} $KAOS</div>
           </div>
           <CircleArrowUpIcon
             className='rotate-45 text-3xl text-green-500'
@@ -33,7 +33,7 @@ export const KaosStats = ({ reality }: KaosStatsProps) => {
               alt='kaos-logo'
               className='!size-8 !rounded-full border-2 border-black'
             />
-            <div>{reality.totalAmountBurns.formatted} $KAOS</div>
+            <div>{reality?.totalAmountBurns.formatted ?? '0'} $KAOS</div>
           </div>
           <CircleArrowUpIcon
             className='-rotate-135 text-3xl text-red-500'
@@ -42,7 +42,7 @@ export const KaosStats = ({ reality }: KaosStatsProps) => {
           />
         </div>
         <div className='flex flex-row items-center justify-between gap-2 rounded-3xl border-2 border-black bg-white px-2 py-2 text-2xl'>
-          ⏳ Collapses in {reality.remainingTime.formatted}
+          ⏳ Collapses in {reality?.remainingTime.formatted ?? '0'}
         </div>
       </div>
     </div>
