@@ -26,7 +26,7 @@ export const KaosActivity = ({ transactions }: KaosActivityCardProps) => {
 
   return (
     <div
-      className='flex w-full basis-3/4 flex-col gap-2 overflow-y-scroll rounded-2xl border-2 border-black bg-[#FDD2E1] p-4'
+      className='hide-scrollbar flex w-full basis-3/4 flex-col gap-2 overflow-y-scroll rounded-2xl border-2 border-black bg-[#FDD2E1] p-4'
       ref={activityContainer}
     >
       {[...transactions].reverse().map((tx) => {

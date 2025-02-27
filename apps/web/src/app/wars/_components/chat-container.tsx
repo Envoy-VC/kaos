@@ -62,7 +62,7 @@ export const ChatContainer = ({ messages }: ChatContainerProps) => {
 
   return (
     <div
-      className='flex h-full w-full flex-col gap-2 overflow-scroll'
+      className='hide-scrollbar flex h-full w-full flex-col gap-2 overflow-scroll'
       ref={containerRef}
     >
       {messages.map((message, index) => {

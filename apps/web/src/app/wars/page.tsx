@@ -13,13 +13,18 @@ const Wars = () => {
     },
   });
   return (
-    <div className='mx-auto my-[6dvh] flex max-w-screen-2xl flex-row flex-wrap items-center justify-center gap-4 px-2'>
-      {realities?.map((d) => (
-        <KaosCard
-          key={d.id}
-          {...d}
-        />
-      ))}
+    <div className='mx-auto my-[6dvh] flex w-full max-w-screen-xl flex-col gap-6'>
+      <div className='px-4 font-bold font-rabbit text-4xl sm:text-5xl lg:text-6xl'>
+        Realities
+      </div>
+      <div className='grid w-full grid-cols-1 place-content-center place-items-center gap-4 px-2 lg:grid-cols-2'>
+        {realities?.map((d) => (
+          <KaosCard
+            key={d.id}
+            {...d}
+          />
+        ))}
+      </div>
     </div>
   );
 };
