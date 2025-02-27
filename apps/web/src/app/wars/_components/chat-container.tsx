@@ -1,5 +1,5 @@
 import { cn } from '@kaos/ui/lib/utils';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { api } from '~/convex/_generated/api';
 
 interface ChatMessageProps {
@@ -37,6 +37,8 @@ interface ChatContainerProps {
 export const ChatContainer = ({ messages }: ChatContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: need to update deps
   useEffect(() => {
     if (containerRef.current) {
@@ -44,6 +46,13 @@ export const ChatContainer = ({ messages }: ChatContainerProps) => {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
       const scrollTop = container.scrollTop;
+
+      if (isInitialLoad && messages.length > 0) {
+        console.log('Initial Scroll');
+        container.scrollTo({ top: scrollHeight, behavior: 'smooth' });
+        setIsInitialLoad(false);
+        return;
+      }
 
       if (scrollHeight - clientHeight - scrollTop < 300) {
         container.scrollTo({ top: scrollHeight, behavior: 'smooth' });
