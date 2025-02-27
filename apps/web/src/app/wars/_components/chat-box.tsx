@@ -14,16 +14,17 @@ import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { api } from '~/convex/_generated/api';
 import type { Id } from '~/convex/_generated/dataModel';
 import { config, kaosConfig, kaosTokenConfig } from '~/lib/wagmi';
+import type { Reality } from '~/types';
 import { cn } from '../../../../../../packages/ui/src/lib/utils';
 
 const percentages = ['0', '25', '50', '100'] as const;
 type Percentage = (typeof percentages)[number];
 
 interface ChatBoxProps {
-  realityId?: string;
+  reality?: Reality;
 }
 
-export const ChatBox = ({ realityId }: ChatBoxProps) => {
+export const ChatBox = ({ reality }: ChatBoxProps) => {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
 
@@ -40,6 +41,12 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
     ...kaosTokenConfig,
     functionName: 'balanceOf',
     args: [address ?? '0x0'],
+  });
+
+  const { data: userPool, refetch: refetchUserPool } = useReadContract({
+    ...kaosConfig,
+    functionName: 'getUserPool',
+    args: [address ?? '0x0', toHex(reality?.id ?? '')],
   });
 
   const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,10 +78,37 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
     api.functions.transactions.addTransaction
   );
 
+  const onClaimReward = async () => {
+    const id = toast.loading('Claiming reward...');
+    try {
+      if (!address) {
+        throw new Error('Please connect your wallet');
+      }
+      if (!userPool) {
+        throw new Error('User Pool Not Found');
+      }
+      if (!reality) {
+        throw new Error('Reality Not Found');
+      }
+      await refetchUserPool();
+      const hash = await writeContractAsync({
+        ...kaosConfig,
+        functionName: 'claimKaos',
+        args: [toHex(reality.id), address],
+      });
+      await refetchUserPool();
+      toast.loading('💸 Tokens claimed.', { id });
+      await waitForTransactionReceipt(config, { hash });
+    } catch (error) {
+      console.log(error);
+      toast.error('💣 Critical chaos failure.', { id });
+    }
+  };
+
   const onSendMessage = async () => {
     const id = toast.loading('Sending message...');
     try {
-      if (!realityId) {
+      if (!reality) {
         throw new Error('Reality Not Found');
       }
       if (!address) {
@@ -103,7 +137,7 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
           ...kaosConfig,
           functionName: 'addToReality',
           args: [
-            toHex(realityId),
+            toHex(reality.id),
             parseEther(amount),
             currentAction === 'fork' ? 0 : 1,
             address,
@@ -115,15 +149,15 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
       await sendMessage({
         address,
         content,
-        realityId: realityId as Id<'realities'>,
+        realityId: reality.id as Id<'realities'>,
       });
       await addTransaction({
-        reality: realityId as Id<'realities'>,
+        reality: reality.id as Id<'realities'>,
         sender: address,
         action: currentAction,
         amount: Number(parseEther(amount)),
       });
-      await queryClient.invalidateQueries({ queryKey: ['wars', realityId] });
+      await queryClient.invalidateQueries({ queryKey: ['wars', reality.id] });
       setContent('');
       setAmount('0');
       toast.success('💬 Message sent!', { id });
@@ -184,12 +218,22 @@ export const ChatBox = ({ realityId }: ChatBoxProps) => {
           </div>
         </div>
         <div className='w-full basis-1/3'>
-          <Button
-            className='w-full'
-            onClick={onSendMessage}
-          >
-            Send
-          </Button>
+          {reality?.isEnded ? (
+            <Button
+              className='w-full'
+              onClick={onClaimReward}
+              disabled={userPool?.claimed}
+            >
+              {userPool?.claimed ? 'Already Claimed' : 'Claim $KAOS'}
+            </Button>
+          ) : (
+            <Button
+              className='w-full'
+              onClick={onSendMessage}
+            >
+              Send
+            </Button>
+          )}
         </div>
       </div>
     </div>

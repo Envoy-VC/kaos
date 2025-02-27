@@ -36,7 +36,7 @@ const WarPage = ({
         />
         <KaosActivity transactions={transactions ?? []} />
       </div>
-      <KaosChat realityId={reality?.id} />
+      <KaosChat reality={reality} />
     </div>
   );
 };

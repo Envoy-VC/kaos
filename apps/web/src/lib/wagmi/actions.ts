@@ -22,6 +22,7 @@ export const getAllRealities = async (): Promise<Reality[]> => {
     id: convexRes.at(index)?._id ?? '',
     startAt: Number(d.startAt),
     endAt: Number(d.endAt),
+    isEnded: Number(d.endAt) < Date.now() / 1000,
     remainingTime: {
       raw: Math.floor(Number(d.endAt) - Date.now() / 1000),
       formatted: formatTime(Number(d.endAt) - Date.now() / 1000),
@@ -72,6 +73,7 @@ export const getReality = async (id: string): Promise<Reality> => {
       raw: Math.floor(Number(contractData.endAt) - Date.now() / 1000),
       formatted: formatTime(Number(contractData.endAt) - Date.now() / 1000),
     },
+    isEnded: Number(contractData.endAt) < Date.now() / 1000,
     startBlock: Number(contractData.startBlock),
     totalAmount: {
       raw: Number(contractData.totalAmount),

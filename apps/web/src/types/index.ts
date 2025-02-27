@@ -2,6 +2,7 @@ export interface Reality {
   id: string;
   startAt: number;
   endAt: number;
+  isEnded: boolean;
   remainingTime: {
     raw: number;
     formatted: string;
