@@ -42,7 +42,9 @@ export const KaosStats = ({ reality }: KaosStatsProps) => {
           />
         </div>
         <div className='flex flex-row items-center justify-between gap-2 rounded-3xl border-2 border-black bg-white px-2 py-2 text-2xl'>
-          ⏳ Collapses in {reality?.remainingTime.formatted ?? '0'}
+          {reality?.remainingTime.formatted
+            ? `⏳ Collapse in: ${reality.remainingTime.formatted}`
+            : '💥 Collapsed'}
         </div>
       </div>
     </div>

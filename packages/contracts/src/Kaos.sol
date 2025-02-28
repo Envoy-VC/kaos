@@ -127,6 +127,8 @@ contract Kaos is IKaos, ReentrancyGuard {
 
         // Reward = (User Stake / Total Staked) * Total Kaos
         uint256 reward = ((stakedAmount * realities[_realityId].totalAmount) / totalStakedAmount);
+        // Approve Kaos Token to transfer
+        SafeTransferLib.safeApprove(address(kaosToken), address(this), reward);
         SafeTransferLib.safeTransferFrom(address(kaosToken), address(this), user, reward);
 
         emit Claimed(_realityId, user, reward);

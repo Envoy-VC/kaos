@@ -6,8 +6,8 @@ Economy is powered by the [$KAOS]() token, which is used to stake into conversat
 
 Contract addresses are deployed on the Monad testnet:
 
-- Kaos Token - [0x412A14F46E15762990D501cf0225d994D11Dc19D](https://testnet.monadexplorer.com/address/0x412A14F46E15762990D501cf0225d994D11Dc19D)
-- Kaos - [0xA7CcAb7F56384924312F9275e81879b62c46F647](https://testnet.monadexplorer.com/address/0xA7CcAb7F56384924312F9275e81879b62c46F647)
+- Kaos Token - [0x98661c737dDcfFf5E7F5606439b5F46bA2Cf1e64](https://testnet.monadexplorer.com/address/0x98661c737dDcfFf5E7F5606439b5F46bA2Cf1e64)
+- Kaos - [0x6d2a67d21997EBa0905655F6d605c68aDeD66696](https://testnet.monadexplorer.com/address/0x6d2a67d21997EBa0905655F6d605c68aDeD66696)
 
 Snickerdoodle is a Autonomous Agent made using ElizaOS Stack and deployed on Altlayer Autonome Platform.
 

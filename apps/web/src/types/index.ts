@@ -5,7 +5,7 @@ export interface Reality {
   isEnded: boolean;
   remainingTime: {
     raw: number;
-    formatted: string;
+    formatted: string | null;
   };
   startBlock: number;
   totalAmount: {

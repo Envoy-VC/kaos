@@ -14,7 +14,9 @@ export const KaosCard = (props: Reality) => {
       <div className='flex h-full w-full basis-2/3 flex-col justify-between gap-2 text-wrap'>
         <div className='font-semibold text-2xl'>{props.metadata.title}</div>
         <div className='font-bold text-neutral-700'>
-          ⏳ Collapse in: {props.remainingTime.formatted}
+          {props.remainingTime.formatted
+            ? `⏳ Collapse in: ${props.remainingTime.formatted}`
+            : '💥 Collapsed'}
         </div>
         <div className='flex flex-row items-center justify-between gap-2 sm:justify-start'>
           <Button

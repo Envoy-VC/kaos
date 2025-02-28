@@ -46,7 +46,7 @@ export const ChatBox = ({ reality }: ChatBoxProps) => {
   const { data: userPool, refetch: refetchUserPool } = useReadContract({
     ...kaosConfig,
     functionName: 'getUserPool',
-    args: [address ?? '0x0', toHex(reality?.id ?? '')],
+    args: [toHex(reality?.id ?? ''), address ?? '0x0'],
   });
 
   const onAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,13 +84,11 @@ export const ChatBox = ({ reality }: ChatBoxProps) => {
       if (!address) {
         throw new Error('Please connect your wallet');
       }
-      if (!userPool) {
-        throw new Error('User Pool Not Found');
-      }
       if (!reality) {
         throw new Error('Reality Not Found');
       }
-      await refetchUserPool();
+      const pool = await refetchUserPool();
+      console.log(pool);
       const hash = await writeContractAsync({
         ...kaosConfig,
         functionName: 'claimKaos',

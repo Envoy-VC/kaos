@@ -25,7 +25,8 @@ contract KaosToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit 
     }
 
     function placeOrder(address to, uint256 amount) public payable {
-        if (msg.value < (amount * INITIAL_PRICE) / 10 ** decimals()) {
+        uint256 tokens = getTokensForEth(msg.value);
+        if (tokens < amount) {
             revert NotEnoughBalance();
         }
         _mint(to, amount);
@@ -36,7 +37,7 @@ contract KaosToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit 
     }
 
     function getTokensForEth(uint256 amount) public view returns (uint256) {
-        return (amount * INITIAL_PRICE) / 10 ** decimals();
+        return (amount / INITIAL_PRICE) * (10 ** decimals());
     }
 
     // The following functions are overrides required by Solidity.
