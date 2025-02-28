@@ -88,7 +88,6 @@ export const ChatBox = ({ reality }: ChatBoxProps) => {
         throw new Error('Reality Not Found');
       }
       const pool = await refetchUserPool();
-      console.log(pool);
       const hash = await writeContractAsync({
         ...kaosConfig,
         functionName: 'claimKaos',
